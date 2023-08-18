@@ -1,53 +1,41 @@
 #!/usr/bin/python3
-from flask import Flask, render_template
+"""Import Modules"""
+from flask import Flask
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def home():
-    """ return the Hello HBNB!
-    """
-    return "Hello HBNB!"
+def hello_route():
+    """Main Route"""
+    return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """ return HBNB
-    """
-    return "HBNB"
+    """hbnb Route"""
+    return 'HBNB'
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c(text):
-    """ return C plus the parameters
-    """
-    return "C {}".format(text.replace("_", " "))
+def c_route(text):
+    """c route , return text with spaces"""
+    text_with_spaces = text.replace('_', ' ')
+    return f"C {text_with_spaces}"
 
 
-@app.route('/python', defaults={'text': "is fun"}, strict_slashes=False)
+@app.route('/python/', defaults={'text': 'is_cool'})
 @app.route('/python/<text>', strict_slashes=False)
-def python(text):
-    """ return Python
-    """
-    return "Python {}".format(text.replace("_", " "))
+def python_route(text):
+    """python route, return text with spaces"""
+    return "Python {}".format(text.replace('_', ' '))
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
-def number(n):
-    """ return the number
-    """
-    return "{} is a number".format(n)
+def number_route(n):
+    """number route, return if only is an integer"""
+    return f"{n} is a number"
 
 
-@app.route('/number_template/<int:n>', strict_slashes=False)
-def num_template(n):
-    """ return a html
-    """
-    return render_template(
-                "5-number.html",
-                num=n
-            )
-
-
-if __name__ == "__main__":
-    app.run()
+"""Entry Point"""
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
