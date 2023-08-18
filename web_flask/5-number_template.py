@@ -1,47 +1,60 @@
 #!/usr/bin/python3
-'''Use the module of flask'''
+"""Initialization of the Python Flask application"""
 from flask import Flask, render_template
-'''
-Initializate this application with flask
-'''
+
 
 app = Flask(__name__)
+
+'''Route root URL'''
 
 
 @app.route('/', strict_slashes=False)
 def hello_hbnb():
-    return 'Hello HBNB!'
+    return "Hello HBNB!"
+
+
+'''Route for /hbnb'''
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    return 'HBNB'
+    return "HBNB"
+
+
+'''Route for /c/<text>'''
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_is_fun(text):
-    text_format = text.replace('_', ' ')
-    result = f'C {text_format}'
-    return result
+def c_text(text):
+    text = text.replace('_', ' ')
+    return f"C {text}"
 
 
-@app.route('/python/', strict_slashes=False)
+'''Route for /python/<text> with default value "is cool"'''
+
+
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def python_is_cool(text='is cool'):
-    text_format = text.replace('_', ' ')
-    result = f'Python {text_format}'
-    return result
+def python_text(text):
+    text = text.replace('_', ' ')
+    return f"Python {text}"
+
+
+'''Route for /number/<n>'''
 
 
 @app.route('/number/<int:n>', strict_slashes=False)
-def number(n):
-    return f'{n} is a number'
+def number_n(n):
+    return f"{n} is a number"
 
 
-@app.route('/number_template/<int:n>')
-def number_template(n):
+'''Route for /number_template/<n>'''
+
+
+@app.route('/number_template/<int:n>', strict_slashes=False)
+def number_template_n(n):
     return render_template('5-number.html', number=n)
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000, host='0.0.0.0')
+    app.run(host='0.0.0.0', port=5000)

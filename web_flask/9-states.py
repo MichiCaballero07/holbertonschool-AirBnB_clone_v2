@@ -1,42 +1,27 @@
 #!/usr/bin/python3
+""" Starts a Flask web app """
 from flask import Flask, render_template
-from models import storage, state
+from models import storage
+from models.state import State
+
 app = Flask(__name__)
+app.url_map.strict_slashes = False
 
 
 @app.teardown_appcontext
-def close_sess(close):
+def dispose(exception):
+    """ Remove current session """
     storage.close()
 
 
-@app.route('/states', strict_slashes=False)
-def city_state():
-    """Cities by states
-    """
-    objs = storage.all("State").values()
-    return render_template(
-                "7-states_list.html",
-                states=objs
-            )
+@app.route('/states/')
+@app.route('/states/<id>')
+def states_and_state(id=None):
+    """ Display list of all the states """
+    if id:
+        id = 'State.{}'.format(id)
+    return render_template('9-states.html', states=storage.all(State), id=id)
 
 
-@app.route('/states/<id>', strict_slashes=False)
-def states_int(id):
-    """state is id is equal to .
-    """
-    objs = storage.all("State").values()
-    position = {}
-    for data in objs:
-        if data.id == id:
-            position = data
-            break
-        else:
-            position = None
-    return render_template(
-                "9-states.html",
-                state=position
-            )
-
-
-if __name__ == "__main__":
-    app.run()
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)

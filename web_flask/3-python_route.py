@@ -1,35 +1,43 @@
 #!/usr/bin/python3
-"""Import Modules"""
+"""Initialization of the Python Flask application"""
 from flask import Flask
+
 app = Flask(__name__)
+
+'''Route root URL'''
 
 
 @app.route('/', strict_slashes=False)
-def hello_route():
-    """Main Route"""
-    return 'Hello HBNB!'
+def hello_hbnb():
+    return "Hello HBNB!"
+
+
+'''Route for /hbnb'''
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """hbnb Route"""
-    return 'HBNB'
+    return "HBNB"
+
+
+'''Route for /c/<text>'''
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def c_route(text):
-    """c route , return text with spaces"""
-    text_with_spaces = text.replace('_', ' ')
-    return f"C {text_with_spaces}"
+def c_text(text):
+    text = text.replace('_', ' ')
+    return f"C {text}"
 
 
-@app.route('/python/', defaults={'text': 'is_cool'})
+'''Route for /python/<text> with default value "is cool"'''
+
+
+@app.route('/python/', defaults={'text': 'is cool'}, strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
-def python_route(text):
-    """python route, return text with spaces"""
-    return "Python {}".format(text.replace('_', ' '))
+def python_text(text):
+    text = text.replace('_', ' ')
+    return f"Python {text}"
 
 
-"""Entry Point"""
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
